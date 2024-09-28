@@ -31,7 +31,8 @@ def install_ucm():
     print_status("Installing UCM configuration")
     try:
         bash("rm -rf /tmp/chromebook-ucm-conf")
-        bash(f"git clone https://github.com/WeirdTreeThing/chromebook-ucm-conf -b {args.branch_name[0]} /tmp/chromebook-ucm-conf")
+        # bash(f"git clone https://github.com/WeirdTreeThing/chromebook-ucm-conf -b {args.branch_name[0]} /tmp/chromebook-ucm-conf")
+        cpdir("./ucm-conf", "/tmp/chromebook-ucm-conf")
     except:
         print_error("Error: Failed to clone UCM repo")
         exit(1)
@@ -58,7 +59,8 @@ def ubuntu():
 def install_deb_kernel():
     print_status("Updating linux kernel (this may take some time)")
     try:
-        urlretrieve(url=deb_kernel_url, filename="/tmp/debian-kernel.zip")
+        # urlretrieve(url=deb_kernel_url, filename="/tmp/debian-kernel.zip")
+        cpfile("./dependencies/debian-kernel.zip", "/tmp/debian-kernel.zip")
         bash("cd /tmp && unzip debian-kernel.zip")
         bash("apt install -y /tmp/linux-image-*-chrultrabook_*_amd64.deb")
         bash("rm /tmp/debian-kernel.zip /tmp/linux-*.deb")
@@ -171,10 +173,12 @@ def avs_audio():
     mkdir("/lib/firmware/intel/avs/skl")
     mkdir("/lib/firmware/intel/avs/apl")
     try:
-        urlretrieve("https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/intel/avs/apl/"
-                "dsp_basefw.bin", filename="/lib/firmware/intel/avs/apl/dsp_basefw.bin")
-        urlretrieve("https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/intel/avs/skl/"
-                "dsp_basefw.bin", filename="/lib/firmware/intel/avs/skl/dsp_basefw.bin")
+        # urlretrieve("https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/intel/avs/apl/"
+        #         "dsp_basefw.bin", filename="/lib/firmware/intel/avs/apl/dsp_basefw.bin")
+        cpfile("./dependencies/apl/dsp_basefw.bin", '/lib/firmware/intel/avs/apl/dsp_basefw.bin')
+        # urlretrieve("https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/intel/avs/skl/"
+        #         "dsp_basefw.bin", filename="/lib/firmware/intel/avs/skl/dsp_basefw.bin")
+        cpfile("./dependencies/skl/dsp_basefw.bin", '/lib/firmware/intel/avs/skl/dsp_basefw.bin')
     except:
         print_error("Error: Failed to download AVS firmware")
 
